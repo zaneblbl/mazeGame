@@ -9,8 +9,8 @@ import React from 'react'
 import { BrowserRouter, Link, Route } from 'react-router-dom'
 
 
-import Home from '/pages/Home/Home'
-import Login from '/pages/Login/Login.tsx'
+import Home from '@/pages/Home/Home.tsx'
+import Login from '@/pages/Login/Login.tsx'
 
 class index extends React.Component {
   render() {
