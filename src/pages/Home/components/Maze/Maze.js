@@ -4,7 +4,7 @@
  * @Date: 2021-02-05 16:13:20
  * @Author: cell
  */
-import utils from '../../../../utils/utils'
+import utils from '/utils/utils'
  class Maze{
    constructor(columns,rows,canvas){
      this.columns=columns
