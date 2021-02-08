@@ -9,24 +9,21 @@
 export class UnionSet{
   constructor(size){
     // 生成0,1,2,3的默认集合
-    this.set=new Array(size).fill(0).map((res,idx)=>{
-      return res+idx
-    })
+    this.set=new Array(size).fill(-1)
   }
   // 找到root
   findRoot(x){
-    let root=x
-    while(this.set[root]!=root){
-      root=this.set[root]
+    while(this.set[x]>=0){
+      x=this.set[x]
     }
-    return root
+    return x
   }
   // 联通 
   union(x,y){
-    let rootX=this.findRoot(x),rootY=this.findRoot(y)
-    if(rootX!=rootY){
-      this.set[rootX]=rootY
-    }
+    this.unionElement(this.findRoot(x),this.findRoot(y))
+  }
+  unionElement(x,y){
+    this.set[x]=y
   }
   // 是否是同一个连通集
   sameSet(x,y){

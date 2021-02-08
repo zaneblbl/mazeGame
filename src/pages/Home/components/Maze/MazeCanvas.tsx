@@ -22,7 +22,6 @@ class MazeCanvas extends React.Component<Props, State>{
     this.canvas = React.createRef();
     this.Maze = new Maze(20,20)
     this.Maze.generate()
-    console.log(this.Maze);
   }
 
   componentDidMount() {
@@ -38,8 +37,6 @@ class MazeCanvas extends React.Component<Props, State>{
   }
   draw(canvas: any, ctx: any) {
     let linkedMap = this.Maze.linkedMap
-    console.log(linkedMap);
-    
     let cellWidth = canvas.width / this.Maze.columns
     let cellHeight = canvas.height / this.Maze.rows
     // translate 0.5像素，避免模糊
@@ -49,11 +46,13 @@ class MazeCanvas extends React.Component<Props, State>{
       let row:number = i / this.Maze.columns >> 0
       let column :number= i % this.Maze.columns
       let mapLinkedCell:any=linkedMap.get(i)
-      if(column!==this.Maze.columns-1 && (!mapLinkedCell || mapLinkedCell?.indexOf(i+1)!=-1)){
+      // 右边的竖线
+      if(column!==(this.Maze.columns-1) && (!mapLinkedCell || mapLinkedCell?.indexOf(i+1)<0)){
         ctx.moveTo((column+1)*cellWidth,row*cellHeight)
         ctx.lineTo((column+1)*cellWidth,(row+1)*cellHeight)
       }
-      if(row!==this.Maze.rows-1 && (!mapLinkedCell || mapLinkedCell?.indexOf(i+this.Maze.columns)!=-1)){
+      // 底部的横线
+      if(row!==(this.Maze.rows-1) && (!mapLinkedCell || mapLinkedCell?.indexOf(i+this.Maze.columns)<0)){
         ctx.moveTo(column*cellWidth,(row+1)*cellHeight)
         ctx.lineTo((column+1)*cellWidth,(row+1)*cellHeight)
       }
