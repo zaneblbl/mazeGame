@@ -7,25 +7,45 @@
 import React from 'react'
 import Maze from './Maze'
 import './MazeCss.scss'
+
+import Player from '../Player/Player'
 interface Props {
 
 }
 interface State {
-
+  playerList:Array<Player>
 }
 
 class MazeCanvas extends React.Component<Props, State>{
   Maze: Maze
   canvas: any
+  width:number
+  height:number
+  state: State = {
+    playerList:[]
+  }
   constructor(Props: any) {
     super(Props)
+    this.width=600
+    this.height=600
     this.canvas = React.createRef();
-    this.Maze = new Maze(20,20)
+    this.Maze = new Maze(30,30)
     this.Maze.generate()
   }
 
   componentDidMount() {
     this.canvasMap()
+    this.initPlayer()
+  }
+
+  initPlayer(){
+    let players=[]
+    players.push(new Player({name:'hh',cellSize:this.width/this.Maze.columns}))
+    this.setState({
+      playerList:players
+    })
+    console.log(players);
+    
   }
 
   canvasMap() {
@@ -37,8 +57,8 @@ class MazeCanvas extends React.Component<Props, State>{
   }
   draw(canvas: any, ctx: any) {
     let linkedMap = this.Maze.linkedMap
-    let cellWidth = canvas.width / this.Maze.columns
-    let cellHeight = canvas.height / this.Maze.rows
+    let cellWidth = this.width / this.Maze.columns
+    let cellHeight = this.height / this.Maze.rows
     // translate 0.5像素，避免模糊
     // ctx.translate(0.5, 0.5)
 
@@ -74,7 +94,7 @@ class MazeCanvas extends React.Component<Props, State>{
   render(): any {
     return (
       <div>
-        <canvas ref={this.canvas} width='800' height='600' className="maze__canvas"></canvas>
+        <canvas ref={this.canvas} width={this.width} height={this.height} className="maze__canvas"></canvas>
       </div>
     )
   }

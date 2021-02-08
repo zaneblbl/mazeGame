@@ -28,7 +28,6 @@ class Maze {
   }
   //  创建
   generate(): any {
-
     //  判断第一个是否与最后一个格子连通，如果不是的话，则每次随机选取两个相邻的格子，如果它们不在同一个连通集，则把它们连通一下，同时记录一下拆掉的墙到linkedMap里面
     while (!this.linkedToFirstCell()) {
       let cellPairs = this.pickRandomCellPairs()
@@ -83,6 +82,9 @@ class Maze {
     if (mapCell2?.indexOf(cell1) == -1) {
       mapCell2.push(cell1)
     }
+  }
+  // 最短路径算法通过
+  calPath() {
   }
 }
 
