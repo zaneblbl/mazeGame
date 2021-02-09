@@ -13,7 +13,6 @@ interface Props {
 
 }
 interface State {
-  playerList:Array<Player>
 }
 
 class MazeCanvas extends React.Component<Props, State>{
@@ -21,9 +20,8 @@ class MazeCanvas extends React.Component<Props, State>{
   canvas: any
   width:number
   height:number
-  state: State = {
-    playerList:[]
-  }
+  ctx:any
+  playerList:Array<Player>
   constructor(Props: any) {
     super(Props)
     this.width=600
@@ -31,29 +29,32 @@ class MazeCanvas extends React.Component<Props, State>{
     this.canvas = React.createRef();
     this.Maze = new Maze(30,30)
     this.Maze.generate()
+    this.playerList=[]
   }
 
   componentDidMount() {
-    this.canvasMap()
     this.initPlayer()
-  }
-
-  initPlayer(){
-    let players=[]
-    players.push(new Player({name:'hh',cellSize:this.width/this.Maze.columns}))
-    this.setState({
-      playerList:players
-    })
-    console.log(players);
+    window.requestAnimationFrame(this.refresh.bind(this));
     
   }
 
-  canvasMap() {
-    let canvas = this.canvas.current
-    let ctx = canvas.getContext('2d')
-    if (ctx) {
-      this.draw(canvas, ctx)
-    }
+  refresh(){
+    let canvas=this.canvas.current
+    let ctx=canvas.getContext('2d')
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.save()
+    this.draw(canvas, ctx)
+    ctx.restore()
+    this.playerList.forEach(player => {
+      player.draw()
+    });
+    window.requestAnimationFrame(this.refresh.bind(this));
+
+  }
+
+  initPlayer(){
+    let player=new Player({name:'hh',speed:3,cellSize:this.width/this.Maze.columns,canvas:this.canvas.current})
+    this.playerList.push(player)
   }
   draw(canvas: any, ctx: any) {
     let linkedMap = this.Maze.linkedMap
@@ -61,7 +62,6 @@ class MazeCanvas extends React.Component<Props, State>{
     let cellHeight = this.height / this.Maze.rows
     // translate 0.5像素，避免模糊
     // ctx.translate(0.5, 0.5)
-
     for (let i = 0; i < this.Maze.cells; i++) {
       let row:number = i / this.Maze.columns >> 0
       let column :number= i % this.Maze.columns

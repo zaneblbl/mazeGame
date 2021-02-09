@@ -76,10 +76,10 @@ class Maze {
   addLinkedMap(cell1: any, cell2: any): void {
     let mapCell1: any = this.linkedMap.get(cell1)
     let mapCell2: any = this.linkedMap.get(cell2)
-    if (mapCell1?.indexOf(cell2) == -1) {
+    if (mapCell1?.indexOf(cell2) === -1) {
       mapCell1.push(cell2)
     }
-    if (mapCell2?.indexOf(cell1) == -1) {
+    if (mapCell2?.indexOf(cell1) === -1) {
       mapCell2.push(cell1)
     }
   }
